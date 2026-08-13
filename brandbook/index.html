@@ -19,15 +19,25 @@
   [id] { scroll-margin-top: 28px; }
   a { color: #1A1A18; }
   a:hover { color: #63635E; }
+  .bb-bar { display: contents; }
+  .bb-burger { display: none; border: 1px solid #1A1A18; background: transparent; color: #1A1A18; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 9px 14px; cursor: pointer; align-items: center; gap: 10px; }
   @media (max-width: 860px) {
+    [id] { scroll-margin-top: 76px; }
     .bb-grid { grid-template-columns: minmax(0, 1fr) !important; }
     .bb-main { min-width: 0; }
     .bb-main img { max-width: 100%; height: auto; }
     .bb-main div[style*="padding:54px"] { padding: 22px !important; }
-    .bb-aside { position: static !important; height: auto !important; border-right: 0 !important; border-bottom: 1px solid #DDDCD8; overflow: visible !important; }
-    .bb-aside nav { flex-direction: column !important; flex-wrap: nowrap !important; gap: 0 !important; border-top: 1px solid #DDDCD8 !important; width: 100%; }
+    .bb-aside { position: sticky !important; top: 0; z-index: 40; height: auto !important; border-right: 0 !important; border-bottom: 1px solid #DDDCD8; padding: 14px 20px !important; gap: 0 !important; overflow: visible !important; background: #FFFFFF; }
+    .bb-bar { display: flex !important; align-items: center; justify-content: space-between; width: 100%; gap: 16px; }
+    .bb-bar img { width: 104px !important; }
+    .bb-meta { display: none !important; }
+    .bb-burger { display: inline-flex !important; }
+    .bb-aside nav { display: none !important; }
+    .bb-aside nav.abierto { display: flex !important; flex-direction: column !important; gap: 0 !important; border-top: 1px solid #DDDCD8 !important; width: 100%; max-height: 60vh; overflow: auto; margin-top: 12px; }
     .bb-aside nav a { padding: 12px 0 !important; }
     .bb-aside nav a > span:first-child { flex: 0 0 auto !important; min-width: 18px; }
+    .bb-foot { display: none !important; }
+    .bb-foot.abierto { display: flex !important; width: 100%; margin-top: 14px !important; }
     .bb-main section { padding-left: 26px !important; padding-right: 26px !important; }
     .bb-main h1 { font-size: clamp(28px, 8.6vw, 40px) !important; }
     .bb-main h2 { font-size: clamp(22px, 6.4vw, 30px) !important; }
@@ -45,21 +55,24 @@
 <div class="bb-grid" style="display:grid; grid-template-columns:262px minmax(0,1fr); align-items:start; background:#FFFFFF; color:#1A1A18; font-family:'JetBrains Mono', monospace">
 
   <aside class="bb-aside" style="position:sticky; top:0; height:100vh; box-sizing:border-box; padding:34px 26px 26px; border-right:1px solid #DDDCD8; display:flex; flex-direction:column; gap:26px; overflow:auto">
-    <img src="../assets/logo.svg" alt="Velásquez &amp; Torres | Abogados Asociados" style="width:158px; height:auto; mix-blend-mode:multiply">
-    <div style="display:flex; flex-direction:column; gap:4px">
-      <span style="font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#63635E">Brandbook</span>
-      <span style="font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#63635E">Versión 1.0 · 2026</span>
+    <div class="bb-bar">
+      <img src="../assets/logo.svg" alt="Velásquez &amp; Torres | Abogados Asociados" style="width:158px; height:auto; mix-blend-mode:multiply">
+      <div class="bb-meta" style="display:flex; flex-direction:column; gap:4px">
+        <span style="font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#63635E">Brandbook</span>
+        <span style="font-size:9px; letter-spacing:0.16em; text-transform:uppercase; color:#63635E">Versión 1.0 · 2026</span>
+      </div>
+      <button type="button" class="bb-burger" onClick="{{ toggleMenu }}">Índice <span>{{ iconoMenu }}</span></button>
     </div>
-    <nav style="display:flex; flex-direction:column; gap:0; border-top:1px solid #DDDCD8">
+    <nav class="{{ claseNav }}" style="display:flex; flex-direction:column; gap:0; border-top:1px solid #DDDCD8">
       <sc-for list="{{ secciones }}" as="s" hint-placeholder-count="11">
-        <a href="{{ s.href }}" data-nav="{{ s.id }}" style="display:flex; gap:12px; align-items:baseline; padding:9px 0; border-bottom:1px solid #EFEFEC; text-decoration:none; font-size:10.5px; letter-spacing:0.06em; color:#1A1A18" style-hover="color:#63635E">
+        <a href="{{ s.href }}" data-nav="{{ s.id }}" onClick="{{ s.ir }}" style="display:flex; gap:12px; align-items:baseline; padding:9px 0; border-bottom:1px solid #EFEFEC; text-decoration:none; font-size:10.5px; letter-spacing:0.06em; color:#1A1A18" style-hover="color:#63635E">
           <span style="flex:0 0 16px; color:#63635E">{{ s.num }}</span>
           <span>{{ s.titulo }}</span>
           <span data-dot="1" style="flex:0 0 5px; height:5px; margin-left:auto; align-self:center; border-radius:50%; background:transparent"></span>
         </a>
       </sc-for>
     </nav>
-    <div style="margin-top:auto; display:flex; flex-direction:column; gap:10px; padding-top:20px; border-top:1px solid #DDDCD8">
+    <div class="bb-foot {{ claseNav }}" style="margin-top:auto; display:flex; flex-direction:column; gap:10px; padding-top:20px; border-top:1px solid #DDDCD8">
       <a href="../assets/logo.svg" download="velasquez-torres-logo.svg" style="font-size:10px; letter-spacing:0.08em; text-decoration:underline; text-underline-offset:4px">Descargar logotipo ↓</a>
       <span style="font-size:9px; letter-spacing:0.1em; color:#63635E; line-height:1.7">Puerto Montt · Osorno · Chile</span>
     </div>
@@ -290,7 +303,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;mostrarProporciones&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;mostrarAnexo&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Contenido&quot;}}">
 class Component extends DCLogic {
-  state = { activa: "s01", fondoOscuro: false, copiado: "", tokensCopiados: false };
+  state = { activa: "s01", fondoOscuro: false, copiado: "", tokensCopiados: false, menuAbierto: false };
 
   iniciarMarcador() {
     if (window.__vtMarcador) return;
@@ -353,7 +366,10 @@ class Component extends DCLogic {
     return {
       verProporciones: this.props.mostrarProporciones ?? true,
       verAnexo: this.props.mostrarAnexo ?? true,
-      secciones: secs.map(([num, titulo, id]) => ({ num, titulo, id, href: "#" + id })),
+      toggleMenu: () => this.setState({ menuAbierto: !this.state.menuAbierto }),
+      claseNav: this.state.menuAbierto ? "abierto" : "",
+      iconoMenu: this.state.menuAbierto ? "×" : "+",
+      secciones: secs.map(([num, titulo, id]) => ({ num, titulo, id, href: "#" + id, ir: () => this.setState({ menuAbierto: false }) })),
       colores: paleta.map(([nombre, hex, uso]) => ({
         nombre, hex, uso,
         etiqueta: this.state.copiado === hex ? "copiado ✓" : hex,
